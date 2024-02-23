@@ -9,4 +9,5 @@ export type TSport = {
   material: string
   color: string
   condition: string
+  branch: string
 }

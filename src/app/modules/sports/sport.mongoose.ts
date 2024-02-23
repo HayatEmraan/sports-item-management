@@ -43,6 +43,10 @@ const sportSchema = new Schema<TSport>(
       type: String,
       required: true,
     },
+    branch: {
+      type: String,
+      required: true,
+    },
   },
   {
     versionKey: false,

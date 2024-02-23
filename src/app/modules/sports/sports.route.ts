@@ -6,24 +6,31 @@ import {
   sportValidationUpdate,
 } from './sports.validation'
 import { guard } from '../../utils/guard'
-
+import { ROLE } from '../../constants/role'
 export const SportRoutes = Router()
 
 SportRoutes.post(
   '/',
-  guard,
+  guard(ROLE.super, ROLE.manager),
   validate(sportValidationInsert),
   SportController.dbInsertSports,
 )
 
-SportRoutes.get('/', guard, SportController.getSports)
-
+SportRoutes.get(
+  '/',
+  guard(ROLE.super, ROLE.manager, ROLE.seller),
+  SportController.getSports,
+)
 
 SportRoutes.patch(
   '/:id',
-  guard,
+  guard(ROLE.super, ROLE.manager),
   validate(sportValidationUpdate),
   SportController.updateSport,
 )
 
-SportRoutes.delete('/', guard, SportController.deleteSport)
+SportRoutes.delete(
+  '/',
+  guard(ROLE.super, ROLE.manager),
+  SportController.deleteSport,
+)

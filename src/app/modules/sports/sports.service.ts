@@ -1,4 +1,5 @@
 import QueryBuilder from '../../builder/QueryBuilder'
+import { ROLE } from '../../constants/role'
 import { SportMongoose } from './sport.mongoose'
 import { TSport } from './sports.type'
 
@@ -6,14 +7,21 @@ const insertSport = async (sport: TSport) => {
   return await SportMongoose.create(sport)
 }
 
-const getSports = async (query: Record<string, unknown>) => {
+const getSports = async (
+  query: Record<string, unknown>,
+  user: Record<string, unknown>,
+) => {
   const modelQuery = SportMongoose.find({
     quantity: {
       $ne: 0,
     },
   })
-  const builder = new QueryBuilder(modelQuery, query)
 
+  if (user.role === ROLE.manager || user.role === ROLE.seller) {
+    modelQuery.where('branch', user.branch)
+  }
+
+  const builder = new QueryBuilder(modelQuery, query)
   return await builder.filter().price().baseQuery
 }
 
@@ -32,7 +40,6 @@ const deleteSport = async (deleteIds: string[]) => {
     },
   })
 }
-
 
 export const SportService = {
   insertSport,

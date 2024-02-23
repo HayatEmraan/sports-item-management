@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { AuthRoutes } from '../modules/auth/auth.route'
 import { SalesRoutes } from '../modules/sales/sales.route'
 import { SportRoutes } from '../modules/sports/sports.route'
+import { UserRoutes } from '../modules/user/user.route'
 
 const router = Router()
 
@@ -17,6 +18,10 @@ const bulkRoutes = [
   {
     route: '/sales',
     handler: SalesRoutes,
+  },
+  {
+    route: '/user',
+    handler: UserRoutes,
   },
 ]
 

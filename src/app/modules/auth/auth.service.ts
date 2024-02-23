@@ -17,6 +17,7 @@ const loginUser = async (user: TAuth) => {
     name: hasUser.name,
     email: hasUser.email,
     role: hasUser.role,
+    branch: hasUser?.branch,
   }
 
   return jwtEncode(decodeUser)

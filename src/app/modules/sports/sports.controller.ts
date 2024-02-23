@@ -10,10 +10,11 @@ const dbInsertSports = catchAsync(async (req, res) => {
 })
 
 const getSports = catchAsync(async (req, res) => {
+  const user = req.user
   return res.status(200).json({
     success: true,
     message: 'Sports fetched successfully',
-    data: await SportService.getSports(req.query),
+    data: await SportService.getSports(req.query, user),
   })
 })
 

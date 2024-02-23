@@ -10,12 +10,12 @@ const insertSales = catchAsync(async (req, res) => {
 })
 
 const salesHistoryByQuery = catchAsync(async (req, res) => {
+  const user = req.user
 
-  console.log(req.query);
   return res.status(200).json({
     success: true,
     message: 'Sales fetched successfully',
-    data: await SaleService.salesHistory(req.query.stats),
+    data: await SaleService.salesHistory(req.query.stats, user),
   })
 })
 

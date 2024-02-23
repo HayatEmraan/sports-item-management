@@ -4,6 +4,7 @@ import { SaleMongoose } from './sales.mongoose'
 import { TSales } from './sales.type'
 import { SportMongoose } from '../sports/sport.mongoose'
 import moment from 'moment'
+import { ROLE } from '../../constants/role'
 
 const salesIntoDb = async (sale: TSales, sellerId: string) => {
   const session = await mongoose.startSession()
@@ -14,7 +15,6 @@ const salesIntoDb = async (sale: TSales, sellerId: string) => {
     if (sale.quantity < 1) {
       throw new Error('Quantity must be greater than 0')
     }
-
     const result = await SaleMongoose.create(
       [
         {
@@ -58,9 +58,10 @@ const salesIntoDb = async (sale: TSales, sellerId: string) => {
   }
 }
 
-const salesHistory = async (query: any = 'week') => {
+const salesHistory = async (query: any = 'week', user: Record<string, any>) => {
   const current = moment().startOf(query)
-  const stats = await SaleMongoose.find({
+  let result
+  const salesQuery = SaleMongoose.find({
     createdAt: {
       $gte: current,
     },
@@ -68,7 +69,16 @@ const salesHistory = async (query: any = 'week') => {
     .sort({ createdAt: -1 })
     .populate('sportId', ['name', 'condition'])
     .populate('sellerId', ['name', 'email'])
-  return stats
+
+  if (user.role === ROLE.manager) {
+    result = await salesQuery.where('branch', user.branch)
+  } else if (user.role === ROLE.seller) {
+    result = salesQuery.find({ sellerId: user.userId, branch: user.branch })
+  } else {
+    result = await salesQuery
+  }
+
+  return result
 }
 
 export const SaleService = {

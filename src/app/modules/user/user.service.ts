@@ -9,6 +9,11 @@ const createUser = async (user: TUser) => {
   return await UserMongoose.create(user)
 }
 
+const getUsersFromDB = async () => {
+  return await UserMongoose.find().select('-password')
+}
+
 export const UserService = {
   createUser,
+  getUsersFromDB,
 }

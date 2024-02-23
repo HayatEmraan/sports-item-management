@@ -17,6 +17,9 @@ const saleSchema = new Schema<TSales>(
       ref: 'User',
       required: true,
     },
+    branch: {
+      type: String,
+    },
     quantity: {
       type: Number,
       required: true,

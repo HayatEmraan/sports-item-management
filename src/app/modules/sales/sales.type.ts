@@ -6,4 +6,5 @@ export type TSales = {
   sellerId?: Types.ObjectId
   quantity: number
   date: string
+  branch: string
 }

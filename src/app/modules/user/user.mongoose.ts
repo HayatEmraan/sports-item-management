@@ -19,8 +19,10 @@ const userSchema = new Schema<TUser>(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'admin',
+      enum: ['super', 'manager', 'seller'],
+    },
+    branch: {
+      type: String,
     },
   },
   {
@@ -28,9 +30,6 @@ const userSchema = new Schema<TUser>(
     timestamps: true,
   },
 )
-
-
-
 
 userSchema.pre('save', async function (next) {
   this.password = await bcryptHash(this.password)
