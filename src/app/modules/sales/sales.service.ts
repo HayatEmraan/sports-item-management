@@ -62,6 +62,7 @@ const salesHistory = async (
   query: any = 'isoWeek',
   user: Record<string, any>,
 ) => {
+
   const current = moment().startOf(query)
   let result
 
