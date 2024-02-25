@@ -19,3 +19,9 @@ SalesRoutes.get(
   guard(ROLE.super, ROLE.manager, ROLE.seller),
   SalesController.salesHistoryByQuery,
 )
+
+SalesRoutes.get(
+  '/report',
+  guard(ROLE.super, ROLE.manager),
+  SalesController.salesReportByQuery,
+)

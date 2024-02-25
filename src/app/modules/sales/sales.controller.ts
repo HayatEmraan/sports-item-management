@@ -19,7 +19,17 @@ const salesHistoryByQuery = catchAsync(async (req, res) => {
   })
 })
 
+const salesReportByQuery = catchAsync(async (req, res) => {
+  const user = req.user
+  return res.status(200).json({
+    success: true,
+    message: 'Sales fetched successfully',
+    data: await SaleService.salesReport(req.query.report, user),
+  })
+})
+
 export const SalesController = {
   insertSales,
   salesHistoryByQuery,
+  salesReportByQuery,
 }

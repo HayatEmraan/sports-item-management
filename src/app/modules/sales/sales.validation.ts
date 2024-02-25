@@ -5,4 +5,6 @@ export const salesValidation = z.object({
   sportId: z.string(),
   quantity: z.number(),
   date: z.string(),
+  branch: z.string(),
+  price: z.number(),
 })

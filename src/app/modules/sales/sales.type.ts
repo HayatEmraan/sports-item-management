@@ -7,4 +7,5 @@ export type TSales = {
   quantity: number
   date: string
   branch: string
+  price: number
 }

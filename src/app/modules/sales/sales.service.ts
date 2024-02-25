@@ -58,9 +58,13 @@ const salesIntoDb = async (sale: TSales, sellerId: string) => {
   }
 }
 
-const salesHistory = async (query: any = 'week', user: Record<string, any>) => {
+const salesHistory = async (
+  query: any = 'isoWeek',
+  user: Record<string, any>,
+) => {
   const current = moment().startOf(query)
   let result
+
   const salesQuery = SaleMongoose.find({
     createdAt: {
       $gte: current,
@@ -81,7 +85,47 @@ const salesHistory = async (query: any = 'week', user: Record<string, any>) => {
   return result
 }
 
+const salesReport = async (
+  query: any = 'isoWeek',
+  user: Record<string, any>,
+) => {
+  const current = moment().startOf(query)
+
+  let result
+  const aggregate = SaleMongoose.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(current as any),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$branch',
+        totalSales: {
+          $sum: {
+            $multiply: ['$price', '$quantity'],
+          },
+        },
+        documents: {
+          $push: '$$ROOT',
+        },
+      },
+    },
+  ])
+
+  if (user?.role === ROLE.manager) {
+    result = await aggregate.match({ branch: user.branch })
+  } else {
+    result = await aggregate
+  }
+
+  return result
+}
+
 export const SaleService = {
   salesIntoDb,
   salesHistory,
+  salesReport,
 }

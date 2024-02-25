@@ -24,6 +24,9 @@ const saleSchema = new Schema<TSales>(
       type: Number,
       required: true,
     },
+    price: {
+      type: Number,
+    },
     date: {
       type: String,
       required: true,
